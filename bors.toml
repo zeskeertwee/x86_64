@@ -1,3 +1,2 @@
-status = [
-  "Test", "Check Formatting"
-]
+status = [ 'CF' ]
+timeout_sec = 180
