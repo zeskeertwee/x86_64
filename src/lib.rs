@@ -9,6 +9,7 @@
 #![cfg_attr(feature = "const_fn", feature(const_in_array_repeat_expressions))]
 #![cfg_attr(feature = "inline_asm", feature(asm))]
 #![cfg_attr(feature = "abi_x86_interrupt", feature(abi_x86_interrupt))]
+#![cfg_attr(feature = "step_trait", feature(step_trait, step_trait_ext))]
 #![warn(missing_docs)]
 #![deny(missing_debug_implementations)]
 

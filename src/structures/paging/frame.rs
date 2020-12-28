@@ -132,6 +132,21 @@ impl<S: PageSize> Sub<PhysFrame<S>> for PhysFrame<S> {
     }
 }
 
+#[cfg(feature = "step_trait")]
+unsafe impl<S: PageSize> core::iter::Step for PhysFrame<S> {
+    fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+        todo!()
+    }
+
+    fn forward_checked(start: Self, count: usize) -> Option<Self> {
+        todo!()
+    }
+
+    fn backward_checked(start: Self, count: usize) -> Option<Self> {
+        todo!()
+    }
+}
+
 /// An range of physical memory frames, exclusive the upper bound.
 #[derive(Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
