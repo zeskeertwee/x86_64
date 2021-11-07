@@ -1,9 +1,12 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
 name: Build
 
 on:
   push:
     branches:
       - 'master'
+      - 'ci-segfault-test'
     tags:
       - '*'
   schedule:
@@ -18,8 +21,8 @@ jobs:
       fail-fast: false
       matrix:
         platform: [
-          ubuntu-latest,
-          macos-latest,
+          # ubuntu-latest,
+          # macos-latest,
           windows-latest
         ]
 
@@ -103,6 +106,12 @@ jobs:
         args: --target x86_64-unknown-linux-musl --no-default-features --features external_asm,instructions
       if: runner.os == 'Linux'
 
+    - name: "Build cargo tests"
+      uses: actions-rs/cargo@v1
+      with:
+        command: rustc
+        args: --tests -- -C target-feature=-sse,+soft-float
+
     - name: "Run cargo test"
       uses: actions-rs/cargo@v1
       with:
@@ -165,23 +174,23 @@ jobs:
       run: cargo xtest
       working-directory: 'testing'
 
-  check_formatting:
-    name: "Check Formatting"
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-    - uses: actions/checkout@v1
-    - run: rustup toolchain install nightly --profile minimal --component rustfmt
-    - run: cargo +nightly fmt -- --check
+  # check_formatting:
+  #   name: "Check Formatting"
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 2
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - run: rustup toolchain install nightly --profile minimal --component rustfmt
+  #   - run: cargo +nightly fmt -- --check
 
-  clippy:
-    name: "Clippy"
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-    - uses: actions/checkout@v1
-    - run: rustup toolchain install nightly --profile minimal --component clippy
-    - name: "Run `cargo clippy`"
-      uses: actions-rs/cargo@v1
-      with:
-        command: clippy
+  # clippy:
+  #   name: "Clippy"
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 10
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - run: rustup toolchain install nightly --profile minimal --component clippy
+  #   - name: "Run `cargo clippy`"
+  #     uses: actions-rs/cargo@v1
+  #     with:
+  #       command: clippy
